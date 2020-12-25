@@ -1,7 +1,19 @@
-import logo from './logo.svg';
-import './App.css';
+import logo from "./logo.svg";
+import "./App.css";
+import { useEffect, useState } from "react";
 
 function App() {
+
+  const [pokemons, setPokemons] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  async function poke(){
+    const response = await fetch("https://pokeapi.co/api/v2/pokemon");
+    const data = await response.json();
+    setPokemons(data.results)
+  }
+  useEffect(() => {
+    poke();
+  }, []);
   return (
     <div className="App">
       <header className="App-header">
@@ -15,8 +27,11 @@ function App() {
           target="_blank"
           rel="noopener noreferrer"
         >
-          Learn React
+          Learn Pokemon
         </a>
+        {pokemons.map((pokemon) => {
+          return <a href={pokemon.url}>{pokemon.name}</a>;
+        })}
       </header>
     </div>
   );
